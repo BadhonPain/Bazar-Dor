@@ -1,6 +1,7 @@
 "use client";
-import { signUp } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import { Icon } from "@iconify/react";
 
 export default function SignUpPage() {
     const onSubmit = async (e) => {
@@ -18,6 +19,23 @@ export default function SignUpPage() {
 
         console.log(resData, error);
 
+    };
+
+
+    const handleSignInwithGoogle = async () => {
+        const data = await signIn.social({
+            provider: "google",
+        });
+
+        console.log(data);
+    };
+
+    const handleSignInwithGithub = async () => {
+        const data = await signIn.social({
+            provider: "github",
+        });
+
+        console.log(data);
     };
 
     return (
@@ -89,6 +107,15 @@ export default function SignUpPage() {
                     </Button>
                 </div>
             </Form>
+            <br />
+            <Button onClick={handleSignInwithGoogle} className="w-xl" variant="primary">
+                <Icon icon="devicon:google" />
+                Sign in with Google
+            </Button>
+            <Button onClick={handleSignInwithGithub} className="w-xl" variant="danger-soft">
+                <Icon icon="mdi:github" />
+                Sign in with GitHub
+            </Button>
         </div>
     );
 }
