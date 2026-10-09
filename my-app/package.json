@@ -19,6 +19,7 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@gravity-ui/icons": "^2.22.0",
     "@tailwindcss/turbopack": "^4",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
