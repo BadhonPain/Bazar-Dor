@@ -1,110 +1,183 @@
-'use client';
-import { useState } from "react";
-import { Link, Button, Spinner } from "@heroui/react";
-import { signOut, useSession } from "@/lib/auth-client";
+"use client";
 
-const NavBarPage = () => {
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+const categories = [
+    { slug: "chal", label: "চাল", icon: "🍚" },
+    { slug: "dal", label: "ডাল", icon: "🫘" },
+    { slug: "tel", label: "তেল", icon: "🛢️" },
+    { slug: "sobji", label: "সবজি", icon: "🥬" },
+    { slug: "mach", label: "মাছ", icon: "🐟" },
+    { slug: "mangsho", label: "মাংস", icon: "🍗" },
+    { slug: "dim-dui", label: "ডিম-দুধ", icon: "🥛" },
+    { slug: "mosla", label: "মসলা", icon: "🌶️" },
+];
 
-    const { data: session, isPending } = useSession();
+const unitLabels = {
+    kg: "কেজি",
+    liter: "লিটার",
+    litre: "লিটার",
+    dozen: "ডজন",
+    piece: "পিস",
+    pc: "পিস",
+};
 
-    console.log('user session in Navbar', session)
+const priceFormatter = new Intl.NumberFormat("bn-BD");
+const percentageFormatter = new Intl.NumberFormat("bn-BD", {
+    maximumFractionDigits: 1,
+});
 
-    if (isPending) {
-        return <div className="flex flex-col items-center gap-2">
-            <Spinner size="xl" />
-            <span className="text-xs text-muted">Loading...</span>
-        </div>
-    }
-
-    const links = <>
-        <li>
-            <Link href="#">Features</Link>
-        </li>
-        <li>
-            <Link href="#" className="font-medium text-accent" aria-current="page">
-                Dashboard
-            </Link>
-        </li>
-        <li>
-            <Link href="https://github.com/BadhonPain">Developer</Link>
-        </li>
-        <li>
-            <Link href="/profile">Profile</Link>
-        </li>
-    </>
-
-    const authLinks = <>
-        {
-            session?.user ? <>
-                <span>Welcome, {session.user?.name}</span>
-                <Button onClick={() => signOut()}>Sign Out</Button>
-            </> : <>
-                <Link href="/sign-in">Sign in</Link>
-                <Link href="/sign-up"><Button>Sign Up</Button></Link>
-            </>
-        }
-    </>
+function TickerItem({ product }) {
+    const direction = product.change?.dir;
+    const isUp = direction === "up";
+    const isDown = direction === "down";
+    const arrow = isUp ? "▲" : isDown ? "▼" : "—";
+    const trendClass = isUp
+        ? "text-[#d54242]"
+        : isDown
+          ? "text-[#16834a]"
+          : "text-[#69746c]";
+    const unit = unitLabels[product.unit] || product.unit;
+    const percentage = Number.isFinite(product.change?.pct)
+        ? percentageFormatter.format(Math.abs(product.change.pct))
+        : "০";
 
     return (
-        <div>
-            <nav className="sticky top-0 z-40 w-full border-b border-separator bg-background/70 backdrop-blur-lg">
-                <header className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-                    <div className="flex items-center gap-4">
-                        <button
-                            className="md:hidden"
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            aria-label="Toggle menu"
-                            aria-expanded={isMenuOpen}
-                        >
-                            <span className="sr-only">Menu</span>
-                            <svg
-                                className="h-6 w-6"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                {isMenuOpen ? (
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                ) : (
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                )}
-                            </svg>
-                        </button>
-                        <div className="flex items-center gap-3">
-                            <Link href="/" className="font-bold">BP Production</Link>
+        <li className="flex shrink-0 items-center gap-2 whitespace-nowrap text-sm text-[#34443a]">
+            <span aria-hidden="true">{product.image || "🛒"}</span>
+            <span className="font-medium">{product.nameBn}</span>
+            <span className="text-[#718077]">
+                {priceFormatter.format(product.today)} টাকা/{unit}
+            </span>
+            <span className={`font-semibold ${trendClass}`}>
+                {arrow} {percentage}%
+            </span>
+        </li>
+    );
+}
+
+const NavBarPage = () => {
+    const pathname = usePathname();
+    const [tickerItems, setTickerItems] = useState([]);
+    const [tickerState, setTickerState] = useState("loading");
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        const loadTickerItems = async () => {
+            try {
+                const response = await fetch(
+                    "https://api.api-store.workers.dev/api/bazardor/products",
+                    { cache: "no-store", signal: controller.signal },
+                );
+
+                if (!response.ok) {
+                    throw new Error(`Market data request failed: ${response.status}`);
+                }
+
+                const products = await response.json();
+                if (!Array.isArray(products)) {
+                    throw new Error("Market data response was not a product list");
+                }
+
+                const visibleProducts = products
+                    .filter(
+                        (product) =>
+                            product &&
+                            typeof product.nameBn === "string" &&
+                            Number.isFinite(product.today),
+                    )
+                    .slice(0, 8);
+
+                setTickerItems(visibleProducts);
+                setTickerState(visibleProducts.length ? "ready" : "empty");
+            } catch (error) {
+                if (error.name === "AbortError") {
+                    return;
+                }
+
+                console.error("Unable to load the market price ticker", error);
+                setTickerState("error");
+            }
+        };
+
+        loadTickerItems();
+        return () => controller.abort();
+    }, []);
+
+    return (
+        <nav aria-label="পণ্য বিভাগ" className="bg-[#fbfdfb]">
+            <div className="border-b border-[#e3e9e4]">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                    <ul className="flex min-h-11 items-center gap-1 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                        {categories.map((category) => {
+                            const isActive = pathname === `/category/${category.slug}`;
+
+                            return (
+                                <li key={category.slug} className="shrink-0">
+                                    <Link
+                                        href={`/category/${category.slug}`}
+                                        aria-current={isActive ? "page" : undefined}
+                                        className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition ${
+                                            isActive
+                                                ? "bg-[#07833f] text-white"
+                                                : "text-[#34443a] hover:bg-[#edf4ef]"
+                                        }`}
+                                    >
+                                        <span aria-hidden="true">{category.icon}</span>
+                                        {category.label}
+                                    </Link>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                aria-label="আজকের বাজারদর"
+                aria-live={tickerState === "ready" ? "off" : "polite"}
+                className="overflow-hidden border-b border-[#e3e9e4] bg-white"
+            >
+                {tickerState === "loading" && (
+                    <p className="mx-auto max-w-6xl px-4 py-2 text-sm text-[#77817a] sm:px-6">
+                        আজকের বাজারদর লোড হচ্ছে…
+                    </p>
+                )}
+                {tickerState === "error" && (
+                    <p className="mx-auto max-w-6xl px-4 py-2 text-sm text-[#77817a] sm:px-6">
+                        আজকের বাজারদর এখন পাওয়া যাচ্ছে না।
+                    </p>
+                )}
+                {tickerState === "empty" && (
+                    <p className="mx-auto max-w-6xl px-4 py-2 text-sm text-[#77817a] sm:px-6">
+                        আজকের বাজারদরের তথ্য নেই।
+                    </p>
+                )}
+                {tickerState === "ready" && (
+                    <div className="market-ticker-viewport py-2.5">
+                        <div className="market-ticker-track">
+                            {[0, 1].map((copy) => (
+                                <ul
+                                    key={copy}
+                                    aria-hidden={copy === 1 ? "true" : undefined}
+                                    className="market-ticker-group"
+                                >
+                                    {tickerItems.map((product) => (
+                                        <TickerItem
+                                            key={`${copy}-${product.slug || product.id || product.nameBn}`}
+                                            product={product}
+                                        />
+                                    ))}
+                                </ul>
+                            ))}
                         </div>
                     </div>
-                    <ul className="hidden items-center gap-4 md:flex">
-                        {links}
-                    </ul>
-                    <div className="hidden items-center gap-4 md:flex">
-                        {authLinks}
-                    </div>
-                </header>
-                {isMenuOpen && (
-                    <div className="border-t border-separator md:hidden">
-                        <ul className="flex flex-col gap-2 p-4">
-                            {links}
-                            <li className="mt-4 flex flex-col gap-2 border-t border-separator pt-4">
-                                {authLinks}
-                            </li>
-                        </ul>
-                    </div>
                 )}
-            </nav>
-        </div>
+            </div>
+        </nav>
     );
 };
 
