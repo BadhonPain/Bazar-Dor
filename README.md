@@ -16,7 +16,7 @@
 </div>
 
 <p align="center">
-  <img src="my-app/design/Home%201.png" alt="Bazar Dor home page design preview" width="760" />
+  <img src="my-app/design/Home.png" alt="Bazar Dor home page design preview" width="760" />
 </p>
 
 ## About
