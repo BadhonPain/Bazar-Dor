@@ -6,26 +6,30 @@ const client = new MongoClient(process.env.MONGODB_URL);
 const db = client.db('Bazar-Dor-DB');
 
 export const auth = betterAuth({
+    trustedOrigins: [
+        "http://localhost:3000",
+        "https://bazar-dor-badhonpain.vercel.app/",
+    ],
     emailAndPassword: {
         enabled: true,
     },
 
     socialProviders: {
-        google: { 
-            clientId: process.env.GOOGLE_API_CLIENT_ID , 
-            clientSecret: process.env.GOOGLE_API_CLIENT_SECRET , 
-        }, 
-        github: { 
-            clientId: process.env.GITHUB_API_CLIENT_ID , 
-            clientSecret: process.env.GITHUB_API_CLIENT_SECRET , 
-        }, 
+        google: {
+            clientId: process.env.GOOGLE_API_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_API_CLIENT_SECRET,
+        },
+        github: {
+            clientId: process.env.GITHUB_API_CLIENT_ID,
+            clientSecret: process.env.GITHUB_API_CLIENT_SECRET,
+        },
     },
     account: {
-		accountLinking: {
-			enabled: true,
-			trustedProviders: ["google", "github"], // Add your providers
-		},
-	},
+        accountLinking: {
+            enabled: true,
+            trustedProviders: ["google", "github"], // Add your providers
+        },
+    },
     database: mongodbAdapter(db, {
         client,
     }),
