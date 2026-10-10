@@ -88,7 +88,7 @@ const AccountMenu = () => {
                     setSignOutError("");
                     setIsMenuOpen((open) => !open);
                 }}
-                className="flex max-w-[180px] items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-[#26352b] transition hover:bg-[#edf4ef] sm:px-3"
+                className="flex max-w-[180px] cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-[#26352b] transition hover:bg-[#edf4ef] sm:px-3"
             >
                 {session.user.image ? (
                     <Image
@@ -145,7 +145,7 @@ const AccountMenu = () => {
                         type="button"
                         onClick={handleSignOut}
                         disabled={isSigningOut}
-                        className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         {isSigningOut ? "সাইন আউট হচ্ছে…" : "সাইন আউট"}
                     </button>

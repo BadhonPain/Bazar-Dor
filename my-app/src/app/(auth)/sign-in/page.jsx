@@ -177,7 +177,7 @@ function SignInForm() {
                                 aria-pressed={isPasswordVisible}
                                 disabled={isBusy}
                                 onClick={() => setIsPasswordVisible((visible) => !visible)}
-                                className="absolute inset-y-0 right-0 inline-flex w-11 items-center justify-center text-[#69766d] hover:text-[#26352b] disabled:cursor-not-allowed"
+                                className="absolute inset-y-0 right-0 inline-flex w-11 cursor-pointer items-center justify-center text-[#69766d] hover:text-[#26352b] disabled:cursor-not-allowed"
                             >
                                 {isPasswordVisible ? (
                                     <EyeSlash aria-hidden="true" className="size-4" />
@@ -191,7 +191,7 @@ function SignInForm() {
                     <button
                         type="submit"
                         disabled={isBusy}
-                        className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#07833f] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#066d35] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07833f] disabled:cursor-not-allowed disabled:opacity-65"
+                        className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#07833f] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#066d35] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07833f] disabled:cursor-not-allowed disabled:opacity-65"
                     >
                         {isSubmitting && (
                             <span
@@ -214,7 +214,7 @@ function SignInForm() {
                         type="button"
                         onClick={() => handleSocialSignIn("google")}
                         disabled={isBusy}
-                        className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#d7e0d8] bg-white px-3 py-2 text-sm font-medium text-[#34443a] transition hover:bg-[#f5f8f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07833f] disabled:cursor-not-allowed disabled:opacity-65"
+                        className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d7e0d8] bg-white px-3 py-2 text-sm font-medium text-[#34443a] transition hover:bg-[#f5f8f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07833f] disabled:cursor-not-allowed disabled:opacity-65"
                     >
                         <Icon aria-hidden="true" icon="devicon:google" className="size-4" />
                         {socialProvider === "google" ? "সংযোগ হচ্ছে…" : "Google"}
@@ -223,7 +223,7 @@ function SignInForm() {
                         type="button"
                         onClick={() => handleSocialSignIn("github")}
                         disabled={isBusy}
-                        className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#d7e0d8] bg-white px-3 py-2 text-sm font-medium text-[#34443a] transition hover:bg-[#f5f8f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07833f] disabled:cursor-not-allowed disabled:opacity-65"
+                        className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d7e0d8] bg-white px-3 py-2 text-sm font-medium text-[#34443a] transition hover:bg-[#f5f8f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#07833f] disabled:cursor-not-allowed disabled:opacity-65"
                     >
                         <Icon aria-hidden="true" icon="mdi:github" className="size-4" />
                         {socialProvider === "github" ? "সংযোগ হচ্ছে…" : "GitHub"}
