@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import toast from "react-hot-toast";
 import { signOut, useSession } from "@/lib/auth-client";
 
@@ -89,9 +90,20 @@ const AccountMenu = () => {
                 }}
                 className="flex max-w-[180px] items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-[#26352b] transition hover:bg-[#edf4ef] sm:px-3"
             >
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#e5efe7] text-sm font-semibold text-[#07833f]">
-                    {initial}
-                </span>
+                {session.user.image ? (
+                    <Image
+                        src={session.user.image}
+                        alt=""
+                        width={32}
+                        height={32}
+                        unoptimized
+                        className="size-8 shrink-0 rounded-full object-cover"
+                    />
+                ) : (
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#e5efe7] text-sm font-semibold text-[#07833f]">
+                        {initial}
+                    </span>
+                )}
                 <span className="max-w-[105px] truncate">{userName}</span>
                 <svg
                     aria-hidden="true"
