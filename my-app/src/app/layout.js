@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import { Hind_Siliguri  } from "next/font/google";
 import "./globals.css";
 import NavBarPage from "./components/NavBar";
 import HeaderPage from "./components/Header"
+import Footer from "./components/Footer";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
@@ -24,10 +26,13 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <HeaderPage></HeaderPage>
-        <NavBarPage></NavBarPage>
+        <Suspense fallback={<div aria-hidden="true" className="h-22 bg-[#fbfdfb]" />}>
+          <NavBarPage />
+        </Suspense>
         <main className="flex-1">
           {children}
         </main>
+        <Footer />
 
       </body>
     </html>

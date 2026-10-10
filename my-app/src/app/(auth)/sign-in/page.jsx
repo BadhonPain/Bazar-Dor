@@ -3,14 +3,32 @@
 import { Eye, EyeSlash } from "@gravity-ui/icons";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
 
 export default function SignInPage() {
+    return (
+        <Suspense fallback={<div className="min-h-full bg-[#f0f5f0]" />}>
+            <SignInForm />
+        </Suspense>
+    );
+}
+
+function SignInForm() {
+    const searchParams = useSearchParams();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [socialProvider, setSocialProvider] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const requestedCallback = searchParams.get("callbackURL");
+    const callbackURL =
+        requestedCallback?.startsWith("/") &&
+        !requestedCallback.startsWith("//") &&
+        !requestedCallback.includes("\\")
+            ? requestedCallback
+            : "/";
+    const requiresSignIn = searchParams.get("reason") === "auth-required";
 
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -26,7 +44,7 @@ export default function SignInPage() {
                 email,
                 password,
                 rememberMe: true,
-                callbackURL: "/",
+                callbackURL,
             });
 
             if (result.error) {
@@ -49,7 +67,7 @@ export default function SignInPage() {
         try {
             const result = await signIn.social({
                 provider,
-                callbackURL: "/",
+                callbackURL,
             });
 
             if (result.error) {
@@ -87,6 +105,12 @@ export default function SignInPage() {
                         বাজার দর অ্যাকাউন্টে সাইন ইন করুন
                     </p>
                 </div>
+
+                {requiresSignIn && (
+                    <p className="mb-5 rounded-lg border border-[#e8d9ad] bg-[#fff9e9] px-3 py-2.5 text-sm text-[#705a20]">
+                        পণ্যের বিস্তারিত দেখতে আগে আপনার অ্যাকাউন্টে সাইন ইন করুন।
+                    </p>
+                )}
 
                 {errorMessage && (
                     <p
