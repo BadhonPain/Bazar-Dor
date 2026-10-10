@@ -128,7 +128,13 @@ my-app/
 
 ## Product data
 
-The application requests the product collection from its configured Bazar Dor API endpoints. It validates the response on the server, tries the backup endpoint if the preferred one is unavailable, and briefly caches successful results to reduce repeat requests. The ticker uses the same-origin `/api/products` route rather than requesting the external API directly from the browser.
+The application uses the [Programming Hero Bazar Dor API](https://openapi.programming-hero.com/api/bazardor) for its product collection, with the previously provided Bazar Dor endpoints retained as fallbacks. It validates responses on the server and briefly caches successful results to reduce repeat requests. The ticker uses the same-origin `/api/products` route, so product data is shared across the ticker and product pages without browser-side requests to the external API.
+
+Useful upstream endpoints:
+
+- All products: `https://openapi.programming-hero.com/api/bazardor/products`
+- Products by category: `https://openapi.programming-hero.com/api/bazardor/products?category=chal`
+- All categories: `https://openapi.programming-hero.com/api/bazardor/categories`
 
 The upstream product service is maintained separately from this application. If market data is unavailable, the app presents an error or unavailable state rather than treating missing data as a valid product list.
 

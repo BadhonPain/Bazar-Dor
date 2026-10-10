@@ -1,6 +1,7 @@
 import { cacheLife } from "next/cache";
 
 const productEndpoints = [
+    "https://openapi.programming-hero.com/api/bazardor/products",
     "https://api.abcz.workers.dev/api/bazardor/products",
     "https://api.api-store.workers.dev/api/bazardor/products",
 ];
@@ -61,7 +62,7 @@ async function loadProducts() {
         }
     }
 
-    throw new Error("Unable to load product data from either market API.", {
+    throw new Error("Unable to load product data from any market API endpoint.", {
         cause: lastError,
     });
 }
