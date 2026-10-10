@@ -1,7 +1,7 @@
 <div align="center">
   <img src="my-app/public/logo.png" alt="Bazar Dor logo" width="88" height="88" />
 
-  <h1>বাজার দর <sub>· Bazar Dor</sub></h1>
+  <h1>বাজার দর</h1>
 
   <p><strong>আজকের বাজারের দাম — এক নজরে, এক জায়গায়।</strong></p>
   <p>A Bengali-first market price guide for everyday essentials across Bangladesh.</p>
