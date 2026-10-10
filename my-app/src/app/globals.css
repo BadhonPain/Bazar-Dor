@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "@heroui/styles"; 
 
+body {
+  font-family: var(--font-bengali), sans-serif;
+}
+
 @keyframes market-ticker-scroll {
   from {
     transform: translateX(0);
@@ -44,4 +48,3 @@
     animation: none;
   }
 }
-
