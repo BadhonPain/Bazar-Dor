@@ -18,6 +18,11 @@ const hindSiliguri = Hind_Siliguri({
 export const metadata = {
   title: "বাজার দর — আজকের বাজারের দাম",
   description: "চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম এক নজরে।",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({ children }) {
