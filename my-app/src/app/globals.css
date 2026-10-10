@@ -5,6 +5,128 @@ body {
   font-family: var(--font-bengali), sans-serif;
 }
 
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] body {
+  background-color: #111a14;
+  color: #e3ece5;
+}
+
+html[data-theme="dark"] [class~="bg-[#fbfdfb]"],
+html[data-theme="dark"] [class~="bg-white"] {
+  background-color: #1b2a20 !important;
+}
+
+html[data-theme="dark"] [class~="bg-[#f8fbf8]"],
+html[data-theme="dark"] [class~="bg-[#f5faf6]"],
+html[data-theme="dark"] [class~="bg-[#f3f7f4]"],
+html[data-theme="dark"] [class~="bg-[#f0f5f0]"] {
+  background-color: #152119 !important;
+}
+
+html[data-theme="dark"] [class~="bg-[#edf4ef]"],
+html[data-theme="dark"] [class~="bg-[#edf2ee]"],
+html[data-theme="dark"] [class~="bg-[#e5efe7]"],
+html[data-theme="dark"] [class~="bg-[#e6f3e9]"] {
+  background-color: #26392c !important;
+}
+
+html[data-theme="dark"] [class*="bg-[#eaf6ed]"] {
+  background-color: #20382a !important;
+}
+
+html[data-theme="dark"] [class*="bg-[#eef2ef]"] {
+  background-color: #2b352e !important;
+}
+
+html[data-theme="dark"] [class*="bg-[#fff0f0]"],
+html[data-theme="dark"] [class*="bg-[#fff8f7]"] {
+  background-color: #3a2422 !important;
+}
+
+html[data-theme="dark"] [class*="text-[#1d2b22]"],
+html[data-theme="dark"] [class*="text-[#26352b]"],
+html[data-theme="dark"] [class*="text-[#34443a]"] {
+  color: #e3ece5 !important;
+}
+
+html[data-theme="dark"] [class*="text-[#69766d]"],
+html[data-theme="dark"] [class*="text-[#77817a]"],
+html[data-theme="dark"] [class*="text-[#69746c]"],
+html[data-theme="dark"] [class*="text-[#718077]"] {
+  color: #aab9ae !important;
+}
+
+html[data-theme="dark"] [class*="border-[#e1e9e2]"],
+html[data-theme="dark"] [class*="border-[#e3e9e4]"],
+html[data-theme="dark"] [class*="border-[#e7ece7]"],
+html[data-theme="dark"] [class*="border-[#e1e8e2]"],
+html[data-theme="dark"] [class*="border-[#edf1ed]"] {
+  border-color: #34463a !important;
+}
+
+html[data-theme="dark"] [class*="from-[#e6f0e8]"] {
+  --tw-gradient-from: #17241b var(--tw-gradient-from-position) !important;
+}
+
+html[data-theme="dark"] [class*="to-[#f0f5f0]"] {
+  --tw-gradient-to: #111a14 var(--tw-gradient-to-position) !important;
+}
+
+html[data-theme="dark"] [class*="group-hover:text-[#07833f]"]:hover {
+  color: #45c878 !important;
+}
+
+html[data-theme="dark"] .product-detail-banner {
+  border-color: #34463a;
+  background-color: #1b2a20;
+}
+
+html[data-theme="dark"] .product-detail-banner > div:first-child {
+  min-height: 8rem;
+}
+
+html[data-theme="dark"] .product-detail-icon {
+  border-color: #1b2a20;
+  background: linear-gradient(135deg, #26392c, #20382a);
+}
+
+html[data-theme="dark"] .market-prices-table {
+  color: #e3ece5;
+}
+
+html[data-theme="dark"] .market-prices-table-header {
+  background: #26392c;
+  color: #e3ece5;
+}
+
+html[data-theme="dark"] .market-prices-table-body {
+  background-color: #1b2a20;
+}
+
+html[data-theme="dark"] .market-prices-table-body > tr {
+  border-color: #34463a;
+}
+
+html[data-theme="dark"] .market-prices-table-row {
+  color: #e3ece5;
+}
+
+html[data-theme="dark"] .market-prices-table-row:nth-child(even) {
+  background-color: #202f25;
+}
+
+html[data-theme="dark"] .market-prices-table-row:hover {
+  background-color: #293a2e;
+}
+
+html[data-theme="dark"] .market-prices-table-badge {
+  background-color: #2b3d30;
+  color: #c4d5c8;
+}
+
 @keyframes market-ticker-scroll {
   from {
     transform: translateX(0);

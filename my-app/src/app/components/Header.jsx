@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import AccountMenu from "./AccountMenu";
+import ThemeToggle from "./ThemeToggle";
 
 const date = new Intl.DateTimeFormat("bn-BD", {
     dateStyle: "full",
@@ -38,7 +39,10 @@ const HeaderPage = () => {
                         </time>
                     </span>
                 </Link>
-                <AccountMenu />
+                <div className="flex shrink-0 items-center gap-2">
+                    <ThemeToggle />
+                    <AccountMenu />
+                </div>
             </div>
         </header>
     );

@@ -154,9 +154,9 @@ export default async function ProductDetailPage({ params }) {
 
                 <section
                     aria-labelledby="product-heading"
-                    className="relative overflow-hidden rounded-3xl border border-[#e1e9e2] bg-white shadow-[0_10px_40px_-12px_rgba(7,131,63,0.18)]"
+                    className="product-detail-banner relative overflow-hidden rounded-3xl border border-[#e1e9e2] bg-white shadow-[0_10px_40px_-12px_rgba(7,131,63,0.18)]"
                 >
-                    <div className="relative h-24 bg-gradient-to-br from-[#07833f] via-[#0a9a4c] to-[#066d35] sm:h-28">
+                    <div className="relative h-28 bg-gradient-to-br from-[#07833f] via-[#0a9a4c] to-[#066d35] sm:h-32">
                         <div className="absolute -right-10 -top-10 size-40 rounded-full bg-white/10" />
                         <div className="absolute -bottom-16 left-10 size-40 rounded-full bg-white/5" />
                         <p className="absolute left-5 top-4 rounded-full bg-white/15 px-3 py-1 text-xs font-medium tracking-wide text-white backdrop-blur-sm sm:left-7">
@@ -168,7 +168,7 @@ export default async function ProductDetailPage({ params }) {
                         <div className="-mt-10 flex min-w-0 flex-col items-start gap-4 sm:-mt-12 sm:flex-row sm:items-end">
                             <span
                                 aria-hidden="true"
-                                className="flex size-20 shrink-0 items-center justify-center rounded-2xl border-4 border-white bg-gradient-to-br from-[#f0f5f0] to-[#dcebdf] text-5xl shadow-md sm:size-24"
+                                className="product-detail-icon flex size-20 shrink-0 items-center justify-center rounded-2xl border-4 border-white bg-gradient-to-br from-[#f0f5f0] to-[#dcebdf] text-5xl shadow-md sm:size-24"
                             >
                                 {product.image}
                             </span>
@@ -190,7 +190,7 @@ export default async function ProductDetailPage({ params }) {
 
                         <div className="flex shrink-0 items-center justify-between gap-4 rounded-2xl border border-[#e1e9e2] bg-gradient-to-br from-[#f8fbf8] to-[#eef5ef] px-5 py-4 sm:min-w-44 sm:flex-col sm:items-start sm:gap-1.5">
                             <span className="text-xs font-medium text-[#69766d]">আজকের দাম</span>
-                            <span className="text-2xl font-bold tracking-tight text-[#1d2b22]">
+                            <span className="text-2xl font-bold tracking-tight text-[#07833f]">
                                 {priceFormatter.format(product.today)}
                                 <span className="ml-1 text-sm font-medium text-[#536157]">
                                     টাকা / {unit}
@@ -262,8 +262,8 @@ export default async function ProductDetailPage({ params }) {
                     </div>
 
                     <div className="overflow-x-auto rounded-2xl border border-[#e1e9e2]">
-                        <table className="w-full min-w-[620px] border-collapse text-left text-sm">
-                            <thead className="bg-gradient-to-r from-[#eef5ef] to-[#e6f0e8] text-[#3f4f44]">
+                        <table className="market-prices-table w-full min-w-[620px] border-collapse text-left text-sm">
+                            <thead className="market-prices-table-header bg-gradient-to-r from-[#eef5ef] to-[#e6f0e8] text-[#3f4f44]">
                                 <tr>
                                     <th scope="col" className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide">বাজার</th>
                                     <th scope="col" className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide">বিভাগ</th>
@@ -272,17 +272,17 @@ export default async function ProductDetailPage({ params }) {
                                     <th scope="col" className="px-5 py-3.5 text-right text-xs font-semibold uppercase tracking-wide">গড়</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#e7ece7] bg-white">
+                            <tbody className="market-prices-table-body divide-y divide-[#e7ece7] bg-white">
                                 {product.markets.map((market) => (
                                     <tr
                                         key={`${market.division}-${market.market}`}
-                                        className="text-[#34443a] transition-colors duration-150 even:bg-[#fafcfa] hover:bg-[#f0f7f1]"
+                                        className="market-prices-table-row text-[#34443a] transition-colors duration-150 even:bg-[#fafcfa] hover:bg-[#f0f7f1]"
                                     >
                                         <th scope="row" className="px-5 py-3.5 font-semibold text-[#26352b]">
                                             {market.market}
                                         </th>
                                         <td className="px-5 py-3.5">
-                                            <span className="inline-flex rounded-full bg-[#eef5ef] px-2.5 py-0.5 text-xs font-medium text-[#536157]">
+                                            <span className="market-prices-table-badge inline-flex rounded-full bg-[#eef5ef] px-2.5 py-0.5 text-xs font-medium text-[#536157]">
                                                 {market.division}
                                             </span>
                                         </td>
