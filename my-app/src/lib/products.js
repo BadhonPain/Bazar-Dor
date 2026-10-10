@@ -1,6 +1,8 @@
+import { cacheLife } from "next/cache";
+
 const productEndpoints = [
-    "https://api.api-store.workers.dev/api/bazardor/products",
     "https://api.abcz.workers.dev/api/bazardor/products",
+    "https://api.api-store.workers.dev/api/bazardor/products",
 ];
 
 function validateProducts(products) {
@@ -28,7 +30,10 @@ function validateProducts(products) {
     });
 }
 
-export async function getProducts() {
+async function loadProducts() {
+    "use cache";
+    cacheLife("minutes");
+
     let lastError;
 
     for (let index = 0; index < productEndpoints.length; index += 1) {
@@ -45,10 +50,9 @@ export async function getProducts() {
             const products = validateProducts(await response.json());
 
             if (index > 0) {
-                console.warn(
-                    "The primary products API was unavailable; loaded market data from the alternative endpoint.",
-                    lastError,
-                );
+                const reason =
+                    lastError instanceof Error ? lastError.message : String(lastError);
+                console.warn(`Preferred products API unavailable; loaded backup data. ${reason}`);
             }
 
             return products;
@@ -60,4 +64,8 @@ export async function getProducts() {
     throw new Error("Unable to load product data from either market API.", {
         cause: lastError,
     });
+}
+
+export function getProducts() {
+    return loadProducts();
 }

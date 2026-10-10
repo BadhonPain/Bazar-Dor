@@ -58,10 +58,9 @@ const NavBarPage = () => {
 
         const loadTickerItems = async () => {
             try {
-                const response = await fetch(
-                    "https://api.api-store.workers.dev/api/bazardor/products",
-                    { cache: "no-store", signal: controller.signal },
-                );
+                const response = await fetch("/api/products", {
+                    signal: controller.signal,
+                });
 
                 if (!response.ok) {
                     throw new Error(`Market data request failed: ${response.status}`);
