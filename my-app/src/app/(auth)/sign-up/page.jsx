@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { signIn, signUp } from "@/lib/auth-client";
 
 export default function SignUpPage() {
@@ -14,6 +15,11 @@ export default function SignUpPage() {
     const [socialProvider, setSocialProvider] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+
+    const setError = (message) => {
+        setErrorMessage(message);
+        toast.error(message);
+    };
 
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -35,17 +41,17 @@ export default function SignUpPage() {
             });
 
             if (result.error) {
-                setErrorMessage(
+                setError(
                     result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি। তথ্যগুলো যাচাই করে আবার চেষ্টা করুন।",
                 );
                 return;
             }
 
             setSuccessMessage("অ্যাকাউন্ট তৈরি হয়েছে। সাইন ইন পেজে নেওয়া হচ্ছে…");
-            window.setTimeout(() => router.replace("/sign-in"), 900);
+            window.setTimeout(() => router.replace("/sign-in?notice=registered"), 900);
         } catch (error) {
             console.error("Unable to create account", error);
-            setErrorMessage("অ্যাকাউন্ট তৈরি করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।");
+            setError("অ্যাকাউন্ট তৈরি করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।");
         } finally {
             setIsSubmitting(false);
         }
@@ -63,14 +69,14 @@ export default function SignUpPage() {
             });
 
             if (result.error) {
-                setErrorMessage(
+                setError(
                     result.error.message || `${provider} দিয়ে অ্যাকাউন্ট তৈরি করা যায়নি।`,
                 );
                 setSocialProvider("");
             }
         } catch (error) {
             console.error(`Unable to create an account with ${provider}`, error);
-            setErrorMessage(`${provider} দিয়ে অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।`);
+            setError(`${provider} দিয়ে অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।`);
             setSocialProvider("");
         }
     };

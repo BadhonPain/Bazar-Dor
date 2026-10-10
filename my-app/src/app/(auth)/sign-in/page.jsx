@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 import { signIn } from "@/lib/auth-client";
 
 export default function SignInPage() {
@@ -29,6 +30,16 @@ function SignInForm() {
             ? requestedCallback
             : "/";
     const requiresSignIn = searchParams.get("reason") === "auth-required";
+    const getSuccessCallbackURL = () => {
+        const destination = new URL(callbackURL, window.location.origin);
+        destination.searchParams.set("notice", "signed-in");
+        return `${destination.pathname}${destination.search}${destination.hash}`;
+    };
+
+    const setError = (message) => {
+        setErrorMessage(message);
+        toast.error(message);
+    };
 
     const onSubmit = async (event) => {
         event.preventDefault();
@@ -44,17 +55,17 @@ function SignInForm() {
                 email,
                 password,
                 rememberMe: true,
-                callbackURL,
+                callbackURL: getSuccessCallbackURL(),
             });
 
             if (result.error) {
-                setErrorMessage(
+                setError(
                     result.error.message || "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করুন।",
                 );
             }
         } catch (error) {
             console.error("Unable to sign in", error);
-            setErrorMessage("সাইন ইন করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।");
+            setError("সাইন ইন করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।");
         } finally {
             setIsSubmitting(false);
         }
@@ -67,18 +78,18 @@ function SignInForm() {
         try {
             const result = await signIn.social({
                 provider,
-                callbackURL,
+                callbackURL: getSuccessCallbackURL(),
             });
 
             if (result.error) {
-                setErrorMessage(
+                setError(
                     result.error.message || `${provider} দিয়ে সাইন ইন শুরু করা যায়নি।`,
                 );
                 setSocialProvider("");
             }
         } catch (error) {
             console.error(`Unable to sign in with ${provider}`, error);
-            setErrorMessage(`${provider} দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।`);
+            setError(`${provider} দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।`);
             setSocialProvider("");
         }
     };

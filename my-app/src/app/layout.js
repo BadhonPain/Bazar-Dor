@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { Hind_Siliguri  } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
+import AuthToasts from "./components/AuthToasts";
 import NavBarPage from "./components/NavBar";
 import HeaderPage from "./components/Header"
 import Footer from "./components/Footer";
@@ -25,6 +27,9 @@ export default function RootLayout({ children }) {
       className={`${hindSiliguri.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <Suspense fallback={null}>
+          <AuthToasts />
+        </Suspense>
         <HeaderPage></HeaderPage>
         <Suspense fallback={<div aria-hidden="true" className="h-22 bg-[#fbfdfb]" />}>
           <NavBarPage />
@@ -33,6 +38,20 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              border: "1px solid #e1e9e2",
+              borderRadius: "12px",
+              fontFamily: "var(--font-bengali), sans-serif",
+            },
+            success: {
+              iconTheme: { primary: "#07833f", secondary: "#ffffff" },
+            },
+          }}
+        />
 
       </body>
     </html>

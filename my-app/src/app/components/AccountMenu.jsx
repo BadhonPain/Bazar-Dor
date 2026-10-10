@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 import { signOut, useSession } from "@/lib/auth-client";
 
 const AccountMenu = () => {
@@ -19,15 +20,20 @@ const AccountMenu = () => {
             const result = await signOut();
 
             if (result?.error) {
-                setSignOutError(result.error.message || "সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
+                const message = result.error.message || "সাইন আউট করা যায়নি। আবার চেষ্টা করুন।";
+                setSignOutError(message);
+                toast.error(message);
                 return;
             }
 
             setSignOutMessage("সফলভাবে সাইন আউট হয়েছে।");
+            toast.success("সফলভাবে সাইন আউট হয়েছে।");
             setIsMenuOpen(false);
         } catch (error) {
             console.error("Unable to sign out", error);
-            setSignOutError("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
+            const message = "সাইন আউট করা যায়নি। আবার চেষ্টা করুন।";
+            setSignOutError(message);
+            toast.error(message);
         } finally {
             setIsSigningOut(false);
         }

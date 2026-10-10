@@ -71,7 +71,9 @@ export default async function ProductDetailPage({ params }) {
 
     if (!session?.user) {
         const callbackURL = `/product/${encodeURIComponent(slug)}`;
-        redirect(`/sign-in?reason=auth-required&callbackURL=${encodeURIComponent(callbackURL)}`);
+        redirect(
+            `/sign-in?reason=auth-required&callbackURL=${encodeURIComponent(callbackURL)}`,
+        );
     }
 
     let products;
