@@ -7,10 +7,13 @@ import { signOut, useSession } from "@/lib/auth-client";
 const AccountMenu = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [signOutError, setSignOutError] = useState("");
+    const [signOutMessage, setSignOutMessage] = useState("");
+    const [isSigningOut, setIsSigningOut] = useState(false);
     const { data: session, isPending } = useSession();
 
     const handleSignOut = async () => {
         setSignOutError("");
+        setIsSigningOut(true);
 
         try {
             const result = await signOut();
@@ -20,10 +23,13 @@ const AccountMenu = () => {
                 return;
             }
 
+            setSignOutMessage("সফলভাবে সাইন আউট হয়েছে।");
             setIsMenuOpen(false);
         } catch (error) {
             console.error("Unable to sign out", error);
             setSignOutError("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
+        } finally {
+            setIsSigningOut(false);
         }
     };
 
@@ -38,20 +44,27 @@ const AccountMenu = () => {
 
     if (!session?.user) {
         return (
-            <div className="flex items-center gap-2">
-                <Link
-                    href="/sign-in"
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-[#34443a] transition hover:bg-[#edf4ef]"
-                >
-                    সাইন ইন
-                </Link>
-                <Link
-                    href="/sign-up"
-                    className="rounded-lg bg-[#07833f] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#066d35] sm:px-4"
-                >
-                    সাইন আপ
-                </Link>
-            </div>
+            <>
+                <div className="flex items-center gap-2">
+                    <Link
+                        href="/sign-in"
+                        className="rounded-lg px-3 py-2 text-sm font-medium text-[#34443a] transition hover:bg-[#edf4ef]"
+                    >
+                        সাইন ইন
+                    </Link>
+                    <Link
+                        href="/sign-up"
+                        className="rounded-lg bg-[#07833f] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#066d35] sm:px-4"
+                    >
+                        সাইন আপ
+                    </Link>
+                </div>
+                {signOutMessage && (
+                    <span role="status" className="sr-only">
+                        {signOutMessage}
+                    </span>
+                )}
+            </>
         );
     }
 
@@ -113,9 +126,10 @@ const AccountMenu = () => {
                     <button
                         type="button"
                         onClick={handleSignOut}
-                        className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50"
+                        disabled={isSigningOut}
+                        className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        সাইন আউট
+                        {isSigningOut ? "সাইন আউট হচ্ছে…" : "সাইন আউট"}
                     </button>
                 </div>
             )}
